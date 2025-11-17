@@ -1,1 +1,56 @@
 /* the CSS style */
+:root {
+      --primary: #4f46e5;
+      --green: #10b981;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --gray: #6b7280;
+      --light: #f3f4f6;
+      --dark: #1f2937;
+      --border: #e5e7eb;
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      color: var(--dark);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    h1, h2, h3 {
+       font-weight: 600;
+       }
+
+    /* Sidebar */
+    .sidebar {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 1rem;
+    }
+    .sidebar h2 { margin-bottom: 1rem; color: var(--primary); }
+    #add-worker-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      width: 100%;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+    }

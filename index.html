@@ -1,1 +1,44 @@
 <!-- the HTML code -->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WorkSphere - Gestion du Personnel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+  <aside class="sidebar">
+
+    <h2><i class="fas fa-users"></i> WorkSphere</h2>
+    <button id="add-worker-btn"><i class="fas fa-plus"></i> Add New Worker</button>
+
+    <input type="text" class="search-box" placeholder="Rechercher un employé..." id="search">
+
+    <h3>Unassigned Staff <span id="unassigned-count">0</span></h3>
+    <div class="unassigned-list" id="unassigned-list"></div>
+
+    <button id="auto-assign-btn" class="btn-orange" style="margin-top:1rem;width:100%;">
+      <i class="fas fa-magic"></i> Réorganisation automatique
+    </button>
+  </aside>
+
+
+  <main class="floor-plan">
+
+    <div class="zones-grid" id="zones-grid">
+
+    </div>
+  </main>
+  
+  <script src="script.js">
+
+  </script>
+</body>
+
+</html>
