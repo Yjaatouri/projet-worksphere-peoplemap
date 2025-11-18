@@ -127,4 +127,15 @@
        border-radius: 8px; 
       }
 
-   
+   /* profile modal */
+    .profile-modal .modal-content {
+      max-width: 640px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+    }
+    .profile-modal img {
+      width: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+    }

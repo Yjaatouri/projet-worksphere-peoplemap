@@ -12,7 +12,7 @@
 
 <body>
 
-
+<!-- the sidebar -->
   <aside class="sidebar">
 
     <h2><i class="fas fa-users"></i> WorkSphere</h2>
@@ -28,7 +28,7 @@
     </button>
   </aside>
 
-
+<!-- the floor plan -->
   <main class="floor-plan">
     <h1>Plan d’étage</h1>
     <div class="zones-grid" id="zones-grid">
@@ -36,7 +36,7 @@
     </div>
   </main>
 
-  
+  <!--Add modal -->
   <div class="modal" id="worker-modal">
     <div class="modal-content">
       <button class="close-modal">&times;</button>
@@ -76,8 +76,24 @@
           </div>
         </div>
   
+<!--  -->
 
 
+ <div class="modal profile-modal" id="profile-modal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <img id="profile-photo" src="" alt="Photo"/>
+      <div>
+        <h2 id="profile-name"></h2>
+        <p><strong>Rôle :</strong> <span id="profile-role"></span></p>
+        <p><strong>Email :</strong> <span id="profile-email"></span></p>
+        <p><strong>Téléphone :</strong> <span id="profile-phone"></span></p>
+        <p><strong>Localisation :</strong> <span id="profile-location"></span></p>
+        <h3>Expériences</h3>
+        
+      </div>
+    </div>
+  </div>
 
 </body>
 
