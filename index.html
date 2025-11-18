@@ -77,6 +77,26 @@
         </div>
   
 <!--  -->
+        <h3 style="margin-top:1.5rem;">Expériences professionnelles</h3>
+        <div id="experiences-container">
+          <div class="exp-item">
+            <div style="flex:1;">
+              <input type="text" placeholder="Poste" style="margin-bottom:0.5rem;" class="exp-title">
+              <input type="text" placeholder="Entreprise" class="exp-company">
+              <input type="text" placeholder="Années (ex: 2019-2022)" class="exp-years">
+            </div>
+            <button type="button" class="small remove-exp">X</button>
+          </div>
+        </div>
+        <button type="button" id="add-exp" style="margin-top:0.5rem;">+ Ajouter une expérience</button>
+
+        <div style="margin-top:2rem;text-align:right;">
+          <button type="submit" class="btn-green">Sauvegarder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
 
  <div class="modal profile-modal" id="profile-modal">
@@ -90,7 +110,7 @@
         <p><strong>Téléphone :</strong> <span id="profile-phone"></span></p>
         <p><strong>Localisation :</strong> <span id="profile-location"></span></p>
         <h3>Expériences</h3>
-        
+        <ul id="profile-experiences"></ul>
       </div>
     </div>
   </div>
