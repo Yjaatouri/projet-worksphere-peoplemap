@@ -35,10 +35,50 @@
 
     </div>
   </main>
-  
-  <script src="script.js">
 
-  </script>
+  
+  <div class="modal" id="worker-modal">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <h2 id="modal-title">Ajouter un employé</h2>
+      <form id="worker-form">
+        <div class="form-grid">
+          <div>
+            <label>Nom complet</label>
+            <input type="text" name="name" required />
+          </div>
+          <div>
+            <label>Rôle</label>
+            <select name="role" required>
+              <option value="">Choisir un rôle</option>
+              <option value="Réceptionniste">Réceptionniste</option>
+              <option value="Technicien IT">Technicien IT</option>
+              <option value="Agent de sécurité">Agent de sécurité</option>
+              <option value="Manager">Manager</option>
+              <option value="Nettoyage">Nettoyage</option>
+              <option value="Développeur">Développeur</option>
+              <option value="Comptable">Comptable</option>
+              <option value="RH">RH</option>
+            </select>
+          </div>
+          <div>
+            <label>Photo (URL)</label>
+            <input  name="photo" placeholder="https://example.com/photo.jpg" />
+            <img id="photo-preview" src="https://via.placeholder.com/150?text=No+Photo" style="width:100%;margin-top:0.5rem;border-radius:12px;" alt="Preview"/>
+          </div>
+          <div>
+            <label>Email</label>
+            <input  name="email" required />
+          </div>
+          <div>
+            <label>Téléphone</label>
+            <input  name="phone" required />
+          </div>
+        </div>
+  
+
+
+
 </body>
 
 </html>
