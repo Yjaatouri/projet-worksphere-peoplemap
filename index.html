@@ -1,112 +1,149 @@
-<!-- the HTML code -->
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WorkSphere - Gestion du Personnel</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- the sidebar -->
   <aside class="sidebar">
-
-    <h2><i class="fas fa-users"></i> WorkSphere</h2>
-    <button id="add-worker-btn"><i class="fas fa-plus"></i> Add New Worker</button>
+    <h2>WorkSphere</h2>
+    <button id="add-worker-btn">+ Ajouter un employé</button>
 
     <input type="text" class="search-box" placeholder="Rechercher un employé..." id="search">
 
-    <h3>Unassigned Staff <span id="unassigned-count">0</span></h3>
+    <h3>Employés non assignés <span id="unassigned-count">(0)</span></h3>
     <div class="unassigned-list" id="unassigned-list"></div>
-
-    <button id="auto-assign-btn" class="btn-orange" style="margin-top:1rem;width:100%;">
-      <i class="fas fa-magic"></i> Réorganisation automatique
-    </button>
   </aside>
 
-<!-- the floor plan -->
   <main class="floor-plan">
     <h1>Plan d’étage</h1>
-    <div class="container" id="container">
-  <div class="conference"></div>
-  <div class="reception"></div>
-  <div class="server"></div>
-  <div class="personel"></div>
-  <div class="qrchive"></div>
-  <div class="security"></div>
+
+    
+    <div class="zones-grid" id="zones-grid">
+
+      
+      <div class="zone zone-reception" data-zone="reception">
+        <h3>Réception 
+          <button class="add-to-zone" onclick="openAddToZone('reception')">+</button>
+        </h3>
+        <small class="zone-counter">0/2</small>
+        <div class="occupied-list"></div>
+      </div>
+
+      
+      <div class="zone zone-serveurs" data-zone="serveurs">
+        <h3>Salle des serveurs 
+          <button class="add-to-zone" onclick="openAddToZone('serveurs')">+</button>
+        </h3>
+        <small class="zone-counter">0/3</small>
+        <div class="occupied-list"></div>
+      |</div>
+
+      
+      <div class="zone zone-securite" data-zone="securite">
+        <h3>Salle de sécurité 
+          <button class="add-to-zone" onclick="openAddToZone('securite')">+</button>
+        </h3>
+        <small class="zone-counter">0/2</small>
+        <div class="occupied-list"></div>
+      </div>
+
+      
+      <div class="zone zone-conference" data-zone="conference">
+        <h3>Salle de conférence 
+          <button class="add-to-zone" onclick="openAddToZone('conference')">+</button>
+        </h3>
+        <small class="zone-counter">0/15</small>
+        <div class="occupied-list"></div>
+      </div>
+
+     
+      <div class="zone zone-personnel" data-zone="personnel">
+        <h3>Salle du personnel 
+          <button class="add-to-zone" onclick="openAddToZone('personnel')">+</button>
+        </h3>
+        <small class="zone-counter">0/20</small>
+        <div class="occupied-list"></div>
+      </div>
+
+      
+      <div class="zone zone-archives" data-zone="archives">
+        <h3>Salle d'archives 
+          <button class="add-to-zone" onclick="openAddToZone('archives')">+</button>
+        </h3>
+        <small class="zone-counter">0/1</small>
+        <div class="occupied-list"></div>
+      </div>
+
     </div>
   </main>
 
-  <!--Add modal -->
+ 
+
   <div class="modal" id="worker-modal">
     <div class="modal-content">
-      <button class="close-modal">&times;</button>
+      <button class="close-modal">×</button>
       <h2 id="modal-title">Ajouter un employé</h2>
       <form id="worker-form">
+        
+
         <div class="form-grid">
           <div>
-            <label>Nom complet</label>
-            <input type="text" name="name" required />
+            <label>Nom complet *</label>
+            <input type="text" name="name" required placeholder="Jean Dupont" />
+            <small class="error-msg">Nom invalide (2–40 lettres)</small>
           </div>
           <div>
-            <label>Rôle</label>
+            <label>Rôle *</label>
             <select name="role" required>
-              <option value="">Choisir un rôle</option>
-              <option value="Réceptionniste">Réceptionniste</option>
-              <option value="Technicien IT">Technicien IT</option>
-              <option value="Agent de sécurité">Agent de sécurité</option>
-              <option value="Manager">Manager</option>
-              <option value="Nettoyage">Nettoyage</option>
-              <option value="Développeur">Développeur</option>
-              <option value="Comptable">Comptable</option>
-              <option value="RH">RH</option>
+              <option value="" disabled selected>Choisir un rôle</option>
+              <option>Réceptionniste</option>
+              <option>Technicien IT</option>
+              <option>Agent de sécurité</option>
+              <option>Manager</option>
+              <option>Nettoyage</option>
+              <option>Développeur</option>
+              <option>Comptable</option>
+              <option>RH</option>
             </select>
+            <small class="error-msg">Sélectionnez un rôle</small>
           </div>
           <div>
             <label>Photo (URL)</label>
-            <input  name="photo" placeholder="https://example.com/photo.jpg" />
-            <img id="photo-preview" src="https://via.placeholder.com/150?text=No+Photo" style="width:100%;margin-top:0.5rem;border-radius:12px;" alt="Preview"/>
+            <input name="photo" type="url" placeholder="https://example.com/photo.jpg" />
+            <img id="photo-preview" src="https://via.placeholder.com/150?text=No+Photo" alt="Preview"/>
+            <small class="error-msg">URL invalide</small>
           </div>
           <div>
-            <label>Email</label>
-            <input  name="email" required />
+            <label>Email *</label>
+            <input type="email" name="email" required placeholder="jean.dupont@entreprise.fr" />
+            <small class="error-msg">Email invalide</small>
           </div>
           <div>
-            <label>Téléphone</label>
-            <input  name="phone" required />
+            <label>Téléphone *</label>
+            <input type="tel" name="phone" required placeholder="06 12 34 56 78" />
+            <small class="error-msg">Format: 06 12 34 56 78</small>
           </div>
         </div>
-  
-<!--  -->
-        <h3 style="margin-top:1.5rem;">Expériences professionnelles</h3>
-        <div id="experiences-container">
-          <div class="exp-item">
-            <div style="flex:1;">
-              <input type="text" placeholder="Poste" style="margin-bottom:0.5rem;" class="exp-title">
-              <input type="text" placeholder="Entreprise" class="exp-company">
-              <input type="text" placeholder="Années (ex: 2019-2022)" class="exp-years">
-            </div>
-            <button type="button" class="small remove-exp">X</button>
-          </div>
-        </div>
-        <button type="button" id="add-exp" style="margin-top:0.5rem;">+ Ajouter une expérience</button>
 
-        <div style="margin-top:2rem;text-align:right;">
+        <h3 style="margin-top:1.5rem;">Expériences professionnelles</h3>
+        <div id="experiences-container"></div>
+        <button type="button" id="add-exp">+ Ajouter une expérience</button>
+
+        <div style="margin-top:2rem; text-align:right;">
           <button type="submit" class="btn-green">Sauvegarder</button>
         </div>
       </form>
     </div>
   </div>
 
-
-
- <div class="modal profile-modal" id="profile-modal">
+ 
+  <div class="modal profile-modal" id="profile-modal">
     <div class="modal-content">
-      <button class="close-modal">&times;</button>
+      <button class="close-modal">×</button>
       <img id="profile-photo" src="" alt="Photo"/>
       <div>
         <h2 id="profile-name"></h2>
@@ -120,6 +157,16 @@
     </div>
   </div>
 
-</body>
 
+  <div class="modal" id="add-to-zone-modal">
+    <div class="modal-content" style="max-width: 500px;">
+      <button class="close-modal">×</button>
+      <h2 id="add-to-zone-title">Assigner à la zone</h2>
+      <div id="eligible-list" style="max-height: 60vh; overflow-y: auto; margin: 1rem 0;"></div>
+      <p id="no-eligible" style="text-align:center; color:var(--gray);">Aucun employé disponible.</p>
+    </div>
+  </div>
+
+  <script src="javaScript.js"></script>
+</body>
 </html>
