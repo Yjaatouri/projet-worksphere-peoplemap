@@ -9,7 +9,7 @@
 <body>
 
   <aside class="sidebar">
-    <h2>WorkSphere</h2>
+    <h2 class="WorkSphere">WorkSphere</h2>
     <button id="add-worker-btn">+ Ajouter un employé</button>
 
     <input type="text" class="search-box" placeholder="Rechercher un employé..." id="search">
@@ -93,21 +93,25 @@
         <div class="form-grid">
           <div>
             <label>Nom complet *</label>
-            <input type="text" name="name" required placeholder="Jean Dupont" />
+            <input type="text" name="name" required placeholder="Ex : Yahya Jaatouri" />
             <small class="error-msg">Nom invalide (2–40 lettres)</small>
           </div>
           <div>
             <label>Rôle *</label>
             <select name="role" required>
               <option value="" disabled selected>Choisir un rôle</option>
-              <option>Réceptionniste</option>
-              <option>Technicien IT</option>
-              <option>Agent de sécurité</option>
               <option>Manager</option>
+
+              <option>Réceptionniste</option>
+              
+              <option>Technicien IT</option>
+              
+              <option>Agent de sécurité</option>
+              
               <option>Nettoyage</option>
-              <option>Développeur</option>
-              <option>Comptable</option>
-              <option>RH</option>
+              
+          
+              
             </select>
             <small class="error-msg">Sélectionnez un rôle</small>
           </div>
@@ -119,7 +123,7 @@
           </div>
           <div>
             <label>Email *</label>
-            <input type="email" name="email" required placeholder="jean.dupont@entreprise.fr" />
+            <input type="email" name="email" required placeholder="Ex : yahyajaatouri2000@gmail.com" />
             <small class="error-msg">Email invalide</small>
           </div>
           <div>

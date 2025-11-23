@@ -1,15 +1,8 @@
-:root {
-  --primary: #4f46e5;
-  --green: #10b981;
-  --orange: #f59e0b;
-  --red: #ef4444;
-  --gray: #6b7280;
-  --light: #f3f4f6;
-  --dark: #1f2937;
-  --border: #e5e7eb;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
+* { 
+  margin:0; 
+  padding:0; 
+  box-sizing:border-box;
+  }
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #f9fafb;
@@ -21,7 +14,9 @@ body {
   padding: 1rem;
 }
 
-h1, h2, h3, h4 { font-weight: 600; }
+h1, h2, h3, h4 {
+   font-weight: 600;
+   }
 
 .sidebar {
   background: white;
@@ -32,10 +27,14 @@ h1, h2, h3, h4 { font-weight: 600; }
   position: sticky;
   top: 1rem;
 }
-.sidebar h2 { margin-bottom: 1rem; color: var(--primary); font-size: 1.5rem; }
+.sidebar h2 { 
+  margin-bottom: 1rem;
+   color: var(--primary); 
+   font-size: 1.5rem; 
+  }
 
 #add-worker-btn, #auto-assign-btn {
-  background: var(--green);
+  background: rgb(20, 193, 124);
   color: white;
   border: none;
   padding: 0.85rem 1rem;
@@ -46,10 +45,9 @@ h1, h2, h3, h4 { font-weight: 600; }
   margin-bottom: 1rem;
   transition: all 0.2s;
 }
-#auto-assign-btn { background: var(--orange); }
-button:hover { transform: translateY(-2px); }
 
 .search-box {
+  background-color: #d4c6d2;
   width: 100%;
   padding: 0.75rem;
   border: 1px solid var(--border);
@@ -58,10 +56,13 @@ button:hover { transform: translateY(-2px); }
   font-size: 1rem;
 }
 
-.unassigned-list { max-height: 70vh; overflow-y: auto; }
+.unassigned-list {
+   max-height: 70vh; 
+   overflow-y: auto;
+   }
 
 .staff-card {
-  background: var(--light);
+  background: lightblue;
   border-radius: 12px;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
@@ -71,14 +72,38 @@ button:hover { transform: translateY(-2px); }
   cursor: grab;
   transition: all 0.2s;
 }
-.staff-card:hover { transform: translateX(4px); }
-.staff-card img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
-.staff-card .info { flex: 1; }
-.staff-card .info h4 { font-size: 0.95rem; margin: 0; }
-.staff-card .info small { color: var(--gray); }
-.staff-card .actions { opacity: 0; transition: opacity 0.2s; }
-.staff-card:hover .actions { opacity: 1; }
-.staff-card button { background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+.staff-card:hover {
+   transform: translateX(4px);
+   }
+.staff-card img {
+   width: 48px;
+   height: 48px;
+   border-radius: 50%; 
+   object-fit: cover;
+   }
+.staff-card .info {
+   flex: 1;
+   }
+.staff-card .info h4 {
+   font-size: 0.95rem;
+    margin: 0;
+   }
+.staff-card .info small {
+   color: var(--gray);
+   }
+.staff-card .actions {
+   opacity: 0;
+    transition: opacity 0.2s;
+   }
+.staff-card:hover .actions {
+   opacity: 1;
+   }
+.staff-card button { 
+  background: none;
+   border: none;
+    cursor: pointer; 
+    font-size: 1.2rem; 
+  }
 
 .floor-plan {
   /* background: white url("background/workspace.jpg") center/cover no-repeat; */
@@ -86,78 +111,101 @@ button:hover { transform: translateY(-2px); }
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   padding: 2rem;
   overflow: auto;
+  max-height: 300px;
 }
 .zones-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  
+  display: grid; 
+  grid-template-columns: 2.8fr 0.3fr 1.1fr 1.2fr; 
+  grid-template-rows: 1.6fr 0.1fr 1.6fr; 
+  gap: 16px 16px; 
+  grid-template-areas: 
+    "conference . server security"
+    "reception . . ."
+    "reception . personel archives"; 
+
 }
+
 .zone-reception {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+  width: 100%;
+  grid-area: reception; 
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  max-height: 100px;
 }
-
-
-
-.zone-reception {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+.zone-securite {
+  grid-area: security;
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  width: 100%;
+  max-height: 100px;
 }
 .zone-serveurs {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+  grid-area: server;
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  max-height: 100px;
 }
 .zone-conference {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+  grid-area: conference;
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  max-height: 100px;
 }
 .zone-personnel {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+  grid-area: personel;
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  max-height: 100px;
 }
 .zone-archives {
-  overflow: scroll;
-  border: 2px dashed var(--border);
+  grid-area: archives;
+  overflow-y: scroll;
+  border: 2px dashed black;
   border-radius: 16px;
   padding: 1rem;
-  min-height: 180px;
+  height: 100px;
   position: relative;
   transition: all 0.3s;
   background: rgba(255,255,255,0.9);
+  max-height: 100px;
 }
 
 
-.zone.required.empty { border-color: #fca5a5; background: #fee2e2; }
+.zone.required.empty {
+   border-color: #fca5a5; 
+   background: #fee2e2; 
+  }
 .zone h3 {
   margin-bottom: 0.75rem;
   color: var(--primary);
@@ -166,8 +214,8 @@ button:hover { transform: translateY(-2px); }
   align-items: center;
 }
 .add-to-zone {
-  background: var(--primary);
-  color: white;
+  background: rgb(112, 112, 216);
+  color: rgb(0, 0, 0);
   border: none;
   width: 32px; height: 32px;
   border-radius: 50%;
@@ -187,7 +235,7 @@ button:hover { transform: translateY(-2px); }
 }
 .modal.active { display: flex; }
 .modal-content {
-  background: white;
+  background: rgb(255, 255, 255);
   border-radius: 16px;
   width: 90%;
   max-width: 560px;
@@ -214,7 +262,7 @@ button:hover { transform: translateY(-2px); }
 input, select {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid balck;
   border-radius: 12px;
   font-size: 1rem;
 }
@@ -227,20 +275,28 @@ input, select {
 }
 
 .exp-item {
-  background: var(--light);
+  background: rgb(168, 245, 168);
   padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1rem;
 }
 .exp-item h4 {
   margin: 0 0 0.75rem 0;
-  color: var(--primary);
+  color: peru;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.btn-green { background: var(--green); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; }
+.btn-green {
+  background: rgb(7, 164, 38);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none; 
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600; 
+}
 
 
 
@@ -274,11 +330,30 @@ input:invalid, select:invalid {
 
 
 @media (max-width: 1024px) {
-  body { grid-template-columns: 1fr; }
-  .sidebar { position: static; }
+  body {
+     grid-template-columns: 1fr;
+     }
+  .sidebar {
+     position: static; 
+    }
 }
 @media (max-width: 767px) {
-  .form-grid, .exp-item .form-grid { grid-template-columns: 1fr; }
-  .profile-modal .modal-content { grid-template-columns: 1fr; }
-  .zones-grid { grid-template-columns: 1fr; }
+  .form-grid, .exp-item .form-grid { 
+    grid-template-columns: 1fr;
+   }
+  .profile-modal .modal-content { 
+    grid-template-columns: 1fr;
+   }
+  .zones-grid {
+    
+    grid-template-columns: 1fr; 
+    grid-template-areas: 
+    "reception"
+    "security"
+    " server"
+    "conference"
+    "personel"
+    "archives"
+    ; 
+  }
 }
