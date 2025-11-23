@@ -31,4 +31,21 @@ function removeFromAllZones(id){
     assignments[zoneName] = newList;
   }
 }
-// 
+// creat a function to make sure that the worker is in a allowed place
+function isAllowed(role , zoneId){
+  if(role === "Manager"){
+    return true;
+  }
+  let zone = null ;
+  for(let i = 0 ; i<zones.length; i++){
+    if(zones[i].id === zoneId){
+      zone = zones[i];
+      break;
+    }
+    for(let j = 0 ; zone.allowed.lenght;j++){
+      if(zone.allowed[j] === role){
+        return true;
+      }
+    }
+  }
+}
