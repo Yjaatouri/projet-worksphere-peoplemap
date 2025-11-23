@@ -49,3 +49,23 @@ function isAllowed(role , zoneId){
     }
   }
 }
+// creat a function to add worker to a zone
+function canAddToZone(zoneId){
+  let zone = null;
+  for(let i = 0 ;i<zones.length; i++){
+    if(zones[i].id === zoneId){
+      zone = zones[i];
+      break;
+    }
+  }
+  let count = 0;
+  if(assignments[zoneid]){
+    count = assignments[zoneId].lenght;
+  } 
+  if(count<zone.max){
+    return true;
+  }else{
+    alert("Impossible d'ajouter un travailleur à cette zone.");
+    return false;
+  }
+}
