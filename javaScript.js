@@ -291,3 +291,25 @@ window.openEditModal = id => {
 
   document.getElementById("worker-modal").classList.add("active");
 };
+form.photo.addEventListener("input", () => {
+  const url = form.photo.value.trim();
+  document.getElementById("photo-preview").src = url || "https://via.placeholder.com/150?text=No+Photo";
+});
+// function to render Unassigned workers 
+const renderUnassigned = () => {
+  const container = document.getElementById("unassigned-list");
+  const search = (document.getElementById("search").value || "").toLowerCase();
+  const unassigned = staff.filter(s => !Object.values(assignments).flat().includes(s.id));
+  const filtered = unassigned.filter(s => s.name.toLowerCase().includes(search) || s.role.toLowerCase().includes(search));
+  document.getElementById("unassigned-count").textContent = `(${filtered.length})`;
+  container.innerHTML = filtered.map(p => `
+    <div class="staff-card" data-id="${p.id}">
+      <img src="${p.photo || `https://via.placeholder.com/50?text=${p.name[0]}`}" alt="${p.name}">
+      <div class="info"><h4>${p.name}</h4><small>${p.role}</small></div>
+      <div class="actions">
+        <button onclick="openEditModal('${p.id}')">Edit</button>
+        <button onclick="deleteStaff('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `).join("");
+};
