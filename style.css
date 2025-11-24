@@ -107,18 +107,21 @@ body {
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   padding: 2rem;
-  overflow: auto;
+  overflow: hidden;
   max-height: 600px;
 }
 .zones-grid {
   display: grid; 
   grid-template-columns: 2.8fr 0.3fr 1.1fr 1.2fr; 
-  grid-template-rows: 1.6fr 0.1fr 1.6fr; 
-  gap: 16px 16px; 
+  grid-template-rows: 1.6fr 1.1fr 1.6fr; 
+  gap: 10px 16px; 
   grid-template-areas: 
-    "conference . server  security"
-    "reception . personel  archives"; 
-    max-height: 23em;
+    "conference . server security"
+    /* "reception . . ." */
+    "reception . personel archives"; 
+    max-height: fit-content;
+    overflow: hidden;
+
 }
 .zone-reception {
   width: 100%;
@@ -256,13 +259,13 @@ input, select {
   border-radius: 12px;
   font-size: 1rem;
 }
-#photo-preview {
+/* #photo-preview {
   width: 100%;
   margin-top: 0.5rem;
   border-radius: 12px;
   height: 140px;
   object-fit: cover;
-}
+} */
 .exp-item {
   background: rgb(168, 245, 168);
   padding: 1rem;
@@ -312,36 +315,9 @@ input:invalid, select:invalid {
   border-radius: 16px;
   object-fit: cover;
 }
-
-.staff-card .actions button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  margin-left: 0.5rem;
-  transition: all 0.2s;
+.edit{
+  background-color: aqua;
 }
-
-.staff-card .actions button:nth-child(1) {   /* Edit button */
-  color: #000;
-}
-
-.staff-card .actions button:nth-child(1):hover {
-  background: #333;
-  color: white;
-}
-
-.staff-card .actions button:nth-child(2) {   /* Delete button */
-  color: #dc2626;   /* red-600 */
-}
-
-.staff-card .actions button:nth-child(2):hover {
-  background: #dc2626;
-  color: white;
-}
-
 @media (max-width: 1024px) {
   body {
      grid-template-columns: 1fr;
