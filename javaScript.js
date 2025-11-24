@@ -69,3 +69,11 @@ function canAddToZone(zoneId){
     return false;
   }
 }
+// crear a arrow function to show errors 
+const showError = (input, msg) => {
+  const errorEl = input.parentElemnt.querySelector(".error-msg");
+  if(errorEl){
+    errorEl.textcontennt = msg;
+    errorEl.style.opacity = "1"; 
+  }
+};
