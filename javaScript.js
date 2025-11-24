@@ -15,11 +15,9 @@ let assignments = {};
 for(let i = 0; i<zones.length ; i++){
   assignments[zones[i].id] = [];
 }
-
 // make flags
 let currentEditId = null;
 let currentTargetZone = null;
-
 // function to make sure that we dont have one worker in two zones
 function removeFromAllZones(id){
   let keys = [];
@@ -255,4 +253,41 @@ const addExperienceField = (title = "", company = "", start = "", end = "") => {
   `;
   div.querySelector("button").onclick = () => div.remove();
   document.getElementById("experiences-container").appendChild(div);
+};
+document.getElementById("add-exp").onclick = () => addExperienceField();
+// function to close modal 
+const closeModal = id => {
+  document.getElementById(id).classList.remove("active");
+  clearAllErrors();
+  form.reset();
+  document.getElementById("experiences-container").innerHTML = "";
+  document.getElementById("photo-preview").src = "https://via.placeholder.com/150?text=No+Photo";
+};
+document.getElementById("add-worker-btn").addEventListener("click", () => {
+  currentEditId = null;
+  form.reset();
+  document.getElementById("photo-preview").src = "https://via.placeholder.com/150?text=No+Photo";
+  document.getElementById("experiences-container").innerHTML = "";
+  addExperienceField();
+  document.getElementById("modal-title").textContent = "Ajouter un employé";
+  document.getElementById("worker-modal").classList.add("active");
+});
+// open a modal to edit a worker
+window.openEditModal = id => {
+  currentEditId = id;
+  const p = staff.find(s => s.id === id);
+  form.name.value = p.name;
+  form.role.value = p.role;
+  form.email.value = p.email || "";
+  form.phone.value = p.phone || "";
+  form.photo.value = p.photo || "";
+  document.getElementById("photo-preview").src = p.photo || "https://via.placeholder.com/150?text=No+Photo";
+  document.getElementById("modal-title").textContent = "Modifier l'employé";
+
+  const container = document.getElementById("experiences-container");
+  container.innerHTML = "";
+  (p.experiences || []).forEach(exp => addExperienceField(exp.title, exp.company, exp.startDate, exp.endDate || ""));
+  if (!p.experiences?.length) addExperienceField();
+
+  document.getElementById("worker-modal").classList.add("active");
 };
