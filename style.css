@@ -256,13 +256,13 @@ input, select {
   border-radius: 12px;
   font-size: 1rem;
 }
-/* #photo-preview {
+#photo-preview {
   width: 100%;
   margin-top: 0.5rem;
   border-radius: 12px;
   height: 140px;
   object-fit: cover;
-} */
+}
 .exp-item {
   background: rgb(168, 245, 168);
   padding: 1rem;
