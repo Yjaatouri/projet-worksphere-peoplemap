@@ -313,3 +313,83 @@ const renderUnassigned = () => {
     </div>
   `).join("");
 };
+// function to render zones 
+const renderZones = () => {
+  zones.forEach(zone => {
+    const zoneEl = document.querySelector(`[data-zone="${zone.id}"]`);
+    const occupied = assignments[zone.id] || [];
+    const counter = zoneEl.querySelector(".zone-counter");
+    const list = zoneEl.querySelector(".occupied-list");
+    const isEmptyRequired = zone.required && occupied.length === 0;
+    counter.textContent = `${occupied.length}/${zone.max}`;
+    if (isEmptyRequired) counter.textContent += " (Obligatoire)";
+    if (isEmptyRequired) {
+      zoneEl.classList.add("required", "empty");
+    } else {
+      zoneEl.classList.remove("required", "empty");
+    }
+    list.innerHTML = occupied.map(id => {
+      const p = staff.find(s => s.id === id);
+      if (!p) return "";
+      return `
+        <div class="staff-card" data-id="${p.id}" onclick="openProfile('${p.id}')">
+          <img src="${p.photo || `https://via.placeholder.com/50?text=${p.name[0]}`}" alt="${p.name}">
+          <div class="info"><h4>${p.name}</h4><small>${p.role}</small></div>
+          <button onclick="event.stopPropagation(); unassign('${p.id}')">X</button>
+        </div>`;
+    }).join("");
+  });
+};
+const renderAll = () => { renderUnassigned(); renderZones(); };
+window.unassign = id => {
+  removeFromAllZones(id);
+  renderAll();
+};
+window.openAddToZone = zoneId => {
+  currentTargetZone = zoneId;
+  const zone = zones.find(z => z.id === zoneId);
+  document.getElementById("add-to-zone-title").textContent = `Assigner → ${zone.name} (${assignments[zoneId].length}/${zone.max})`;
+  const eligible = staff.filter(s =>
+    !Object.values(assignments).flat().includes(s.id) &&
+    isAllowed(s.role, zoneId) &&
+    canAddToZone(zoneId)
+  );
+  const list = document.getElementById("eligible-list");
+  const noMsg = document.getElementById("no-eligible");
+  if (eligible.length === 0) {
+    list.innerHTML = "";
+    noMsg.style.display = "block";
+  } else {
+    noMsg.style.display = "none";
+    list.innerHTML = eligible.map(p => `
+      <div class="staff-card" onclick="assignToCurrentZone('${p.id}')" style="cursor:pointer;">
+        <img src="${p.photo || `https://via.placeholder.com/50?text=${p.name[0]}`}" alt="${p.name}">
+        <div class="info"><h4>${p.name}</h4><small>${p.role}</small></div>
+      </div>
+    `).join("");
+  }
+  document.getElementById("add-to-zone-modal").classList.add("active");
+};
+window.assignToCurrentZone = id => {
+  if (!currentTargetZone) return;
+  removeFromAllZones(id);
+  assignments[currentTargetZone].push(id);
+  renderAll();
+  document.getElementById("add-to-zone-modal").classList.remove("active");
+  currentTargetZone = null;
+};
+window.openProfile = id => {
+  const p = staff.find(s => s.id === id);
+  if (!p) return;
+  document.getElementById("profile-name").textContent = p.name;
+  document.getElementById("profile-role").textContent = p.role;
+  document.getElementById("profile-email").textContent = p.email || "Non renseigné";
+  document.getElementById("profile-phone").textContent = p.phone || "Non renseigné";
+  document.getElementById("profile-location").textContent = getCurrentLocation(id);
+  document.getElementById("profile-photo").src = p.photo || "https://via.placeholder.com/200?text=Photo";
+  const expList = document.getElementById("profile-experiences");
+  expList.innerHTML = p.experiences?.length
+    ? p.experiences.map(e => `<li><strong>${e.title}</strong> — ${e.company} (${new Date(e.startDate).getFullYear()} → ${e.endDate ? new Date(e.endDate).getFullYear() : "Présent"})</li>`).join("")
+    : "<li>Aucune expérience renseignée</li>";
+  document.getElementById("profile-modal").classList.add("active");
+};
