@@ -1,51 +1,42 @@
-// i created the zones 
 const zones = [
-  { id: "reception", name: "Réception", required: true, max: 8, allowed: ["Réceptionniste","Nettoyage"] },
-  { id: "serveurs", name: "Salle des serveurs", required: true, max: 5, allowed: ["Technicien IT","Nettoyage"] },
-  { id: "securite", name: "Salle de sécurité", required: true, max: 6, allowed: ["Agent de sécurité","Nettoyage"] },
-  { id: "conference", name: "Salle de conférence", required: false, max: 7, allowed: ["Nettoyage","Réceptionniste","Technicien IT","Manager","Agent de sécurité"] },
-  { id: "personnel", name: "Salle du personnel", required: false, max: 10, allowed: ["Nettoyage","Réceptionniste","Technicien IT","Manager","Agent de sécurité"] },
-  { id: "archives", name: "Salle d'archives", required: true, max: 4, allowed: ["Manager"] }
+  { id: "reception", name: "Réception", required: true, max: 6, allowed: ["Réceptionniste","Nettoyage"] },
+  { id: "serveurs", name: "Salle des serveurs", required: true, max: 4, allowed: ["Technicien IT","Nettoyage"] },
+  { id: "securite", name: "Salle de sécurité", required: true, max: 4, allowed: ["Agent de sécurité","Nettoyage"] },
+  { id: "conference", name: "Salle de conférence", required: false, max: 8, allowed: ["Nettoyage","Réceptionniste","Technicien IT","Manager","Agent de sécurité"] },
+  { id: "personnel", name: "Salle du personnel", required: false, max: 7, allowed: ["Nettoyage","Réceptionniste","Technicien IT","Manager","Agent de sécurité"] },
+  { id: "archives", name: "Salle d'archives", required: true, max: 5, allowed: ["Manager"] }
 ];
-// get the worker form fom HTML
 const form = document.getElementById("worker-form");
-// creat arrays to put staff and assingments
-let staff = [];
+let staff = [
+];
 let assignments = {};
-for(let i = 0; i<zones.length ; i++){
-  assignments[zones[i].id] = [];
-}
-// make flags
+zones.forEach(z => assignments[z.id] = []);
 let currentEditId = null;
 let currentTargetZone = null;
-// function to make sure that we dont have one worker in two zones
-function removeFromAllZones(id){
-  let keys = [];
-  keys.push("reception");
-  keys.push("serveurs");
-  keys.push("securite");
-  keys.push("conference");
-  keys.push("personnel");
-  keys.push("archives");
+function removeFromAllZones(id) {
+  let keys = Object.keys(assignments); 
 
-  for(let i = 0 ; i<keys.lenght ; i++){
+  for (let i = 0; i < keys.length; i++) {
     let zoneName = keys[i];
     let zoneList = assignments[zoneName];
     let newList = [];
-    for(let j = 0 ; j<zoneList.lenght ; j++){
-      if(zoneList[j] !==id){
+    for (let j = 0; j < zoneList.length; j++) {
+      if (zoneList[j] !== id) {
         newList.push(zoneList[j]);
       }
     }
     assignments[zoneName] = newList;
   }
 }
-// creat a function to make sure that the worker is in a allowed place
+
 function isAllowed(role, zoneId) {
 
+ 
   if (role === "Manager") {
     return true;
   }
+
+ 
   let zone = null;
   for (let i = 0; i < zones.length; i++) {
     if (zones[i].id === zoneId) {
@@ -53,31 +44,45 @@ function isAllowed(role, zoneId) {
       break;
     }
   }
+
+
   for (let j = 0; j < zone.allowed.length; j++) {
     if (zone.allowed[j] === role) {
       return true;
     }
   }
- return false;
+
+  
+  return false;
 }
-// creat a function to add worker to a zone
-function canAddToZone(zoneId){
+
+function canAddToZone(zoneId) {
+  
   let zone = null;
-  for(let i = 0 ;i<zones.length; i++){
-    if(zones[i].id === zoneId){
+  for (let i = 0; i < zones.length; i++) {
+    if (zones[i].id === zoneId) {
       zone = zones[i];
       break;
     }
   }
-  let count = 0;
-  if(assignments[zoneId]){
-    count = assignments[zoneId].lenght;
-  } 
-  if(count<zone.max){
-    return true;
-  }else{
-    alert("Impossible d'ajouter un travailleur à cette zone.");
+
+  
+  if (!zone) {
     return false;
+  }
+
+  
+  let currentCount = 0;
+  if (assignments[zoneId]) {
+    currentCount = assignments[zoneId].length;
+  }
+
+  
+  if (currentCount < zone.max) {
+    return true;
+  } else {
+    
+    return false; 
   }
 }
 function getCurrentLocation(id) {
@@ -93,98 +98,97 @@ function getCurrentLocation(id) {
   }
   return "Non assigné";
 }
-// crear a arrow function to show errors 
 const showError = (input, msg) => {
   const errorEl = input.parentElement.querySelector(".error-msg");
-  if(errorEl){
-    errorEl.textContennt = msg;
-    errorEl.style.opacity = "1"; 
+  if (errorEl  ){
+    errorEl.textContent = msg;
+    errorEl.style.opacity = "1";
   }
 };
-// function to clear error
 const clearError = input => {
   const errorEl = input.parentElement.querySelector(".error-msg");
-  if (errorEl) errorEl.style.opacity = "0";
+  if (errorEl || input === "") {errorEl.style.opacity = "0"};
 };
-// clear all errors to submit
 const clearAllErrors = () => {
   form.querySelectorAll("input, select").forEach(clearError);
   document.querySelectorAll(".exp-date-error").forEach(el => el.remove());
 };
-// creat validation and regex 
-const validateForm = () => {
+function validateForm() {
   clearAllErrors();
   let valid = true;
-  let firstError = null;
+  let firstErrorField = null;
 
-  const nameVal = form.name.value.trim();
-  if (!nameVal || !/^[A-Za-zÀ-ÿ\s'-]{2,40}$/.test(nameVal)) {
-    showError(form.name, "Nom invalide (2–40 lettres)");
+  let nameValue = form.name.value.trim();
+  if (nameValue === "" || !/^[A-Za-zÀ-ÿ\s'-]{2,40}$/.test(nameValue)) {
+    showError(form.name, "(2–40 lettres)");
     valid = false;
-    if (!firstError) firstError = form.name;
+    if (firstErrorField === null) firstErrorField = form.name;
   }
 
-  if (!form.role.value) {
+  if (form.role.value === "") {
     showError(form.role, "Choisissez un rôle");
     valid = false;
-    if (!firstError) firstError = form.role;
+    if (firstErrorField === null) firstErrorField = form.role;
   }
 
-  const emailVal = form.email.value.trim();
-  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-    showError(form.email, "Email invalide");
+  let emailValue = form.email.value.trim();
+  if (emailValue === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    showError(form.email, "Entre un email valide");
     valid = false;
-    if (!firstError) firstError = form.email;
+    if (firstErrorField === null) firstErrorField = form.email;
   }
 
-  const phoneVal = form.phone.value.trim().replace(/[\s\-\.]/g, '');
-  const phoneRegex = /^(0|\+33|0033)[1-9]\d{8}$/;
-  if (!phoneVal || !phoneRegex.test(phoneVal)) {
+  let phoneValue = form.phone.value.trim().replace(/[\s\-\.]/g, '');
+  let phoneRegex = /^(0|\+33|0033)[1-9]\d{8}$/;
+  if (phoneValue === "" || !phoneRegex.test(phoneValue)) {
     showError(form.phone, "Format: 06 12 34 56 78 ou +33612345678");
     valid = false;
-    if (!firstError) firstError = form.phone;
+    if (firstErrorField === null) firstErrorField = form.phone;
   }
 
+  let expItems = document.querySelectorAll("#experiences-container .exp-item");
+  let hasFullExperience = false;
 
-  const expItems = document.querySelectorAll("#experiences-container .exp-item");
-  let hasCompleteExp = false;
+  for (let i = 0; i < expItems.length; i++) {
+    let item = expItems[i];
+    let inputs = item.querySelectorAll("input");
+    let title   = inputs[0];
+    let company = inputs[1];
+    let start   = inputs[2];
+    let end     = inputs[3];
 
-  expItems.forEach(item => {
-    const inputs = item.querySelectorAll("input");
-    const [titleInp, companyInp, startInp, endInp] = inputs;
-
-    if (startInp.value && endInp.value && endInp.value < startInp.value) {
-      endInp.style.borderColor = "var(--red)";
+    if (start.value && end.value && end.value < start.value) {
+      end.style.borderColor = "red";
       let msg = item.querySelector(".exp-date-error");
       if (!msg) {
         msg = document.createElement("small");
         msg.className = "exp-date-error error-msg";
-        msg.style.color = "var(--red)";
-        endInp.parentElement.appendChild(msg);
+        msg.style.color = "red";
+        end.parentElement.appendChild(msg);
       }
-      msg.textContent = "Date de fin ≥ date début";
+      msg.textContent = "Date de fin doit être après date début";
       msg.style.opacity = "1";
       valid = false;
     }
 
-    if (titleInp.value.trim() && companyInp.value.trim() && startInp.value) {
-      hasCompleteExp = true;
+    if (title.value.trim() && company.value.trim() && start.value) {
+      hasFullExperience = true;
     }
-  });
+  }
 
-  if (expItems.length > 0 && !hasCompleteExp) {
+  if (expItems.length > 0 && !hasFullExperience) {
     alert("Ajoutez au moins une expérience complète (Poste + Entreprise + Date début)");
     valid = false;
   }
 
-  if (!valid && firstError) {
-    firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-    firstError.focus();
+  if (!valid && firstErrorField) {
+    firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+    firstErrorField.focus();
   }
 
   return valid;
-};
-// add event to submit 
+}
+
 form.addEventListener("submit", function(e) {
   e.preventDefault();
   if (!validateForm()) return;
@@ -235,7 +239,6 @@ form.addEventListener("submit", function(e) {
   form.reset();
   currentEditId = null;
 });
-// add experience 
 const addExperienceField = (title = "", company = "", start = "", end = "") => {
   const div = document.createElement("div");
   div.className = "exp-item";
@@ -255,7 +258,6 @@ const addExperienceField = (title = "", company = "", start = "", end = "") => {
   document.getElementById("experiences-container").appendChild(div);
 };
 document.getElementById("add-exp").onclick = () => addExperienceField();
-// function to close modal 
 const closeModal = id => {
   document.getElementById(id).classList.remove("active");
   clearAllErrors();
@@ -272,7 +274,6 @@ document.getElementById("add-worker-btn").addEventListener("click", () => {
   document.getElementById("modal-title").textContent = "Ajouter un employé";
   document.getElementById("worker-modal").classList.add("active");
 });
-// open a modal to edit a worker
 window.openEditModal = id => {
   currentEditId = id;
   const p = staff.find(s => s.id === id);
@@ -281,7 +282,7 @@ window.openEditModal = id => {
   form.email.value = p.email || "";
   form.phone.value = p.phone || "";
   form.photo.value = p.photo || "";
-  document.getElementById("photo-preview").src = p.photo || "https://via.placeholder.com/150?text=No+Photo";
+  document.getElementById("photo-preview").src = p.photo;
   document.getElementById("modal-title").textContent = "Modifier l'employé";
 
   const container = document.getElementById("experiences-container");
@@ -293,9 +294,9 @@ window.openEditModal = id => {
 };
 form.photo.addEventListener("input", () => {
   const url = form.photo.value.trim();
-  document.getElementById("photo-preview").src = url || "https://via.placeholder.com/150?text=No+Photo";
+  document.getElementById("photo-preview").src = url ;
 });
-// function to render Unassigned workers 
+
 const renderUnassigned = () => {
   const container = document.getElementById("unassigned-list");
   const search = (document.getElementById("search").value || "").toLowerCase();
@@ -313,7 +314,6 @@ const renderUnassigned = () => {
     </div>
   `).join("");
 };
-// function to render zones 
 const renderZones = () => {
   zones.forEach(zone => {
     const zoneEl = document.querySelector(`[data-zone="${zone.id}"]`);
@@ -344,6 +344,13 @@ const renderAll = () => { renderUnassigned(); renderZones(); };
 window.unassign = id => {
   removeFromAllZones(id);
   renderAll();
+};
+window.deleteStaff = id => {
+  if (confirm("Supprimer cet employé définitivement ?")) {
+    staff = staff.filter(s => s.id !== id);
+    removeFromAllZones(id);
+    renderAll();
+  }
 };
 window.openAddToZone = zoneId => {
   currentTargetZone = zoneId;
@@ -386,10 +393,20 @@ window.openProfile = id => {
   document.getElementById("profile-email").textContent = p.email || "Non renseigné";
   document.getElementById("profile-phone").textContent = p.phone || "Non renseigné";
   document.getElementById("profile-location").textContent = getCurrentLocation(id);
-  document.getElementById("profile-photo").src = p.photo || "https://via.placeholder.com/200?text=Photo";
+  document.getElementById("profile-photo").src = p.photo ;
   const expList = document.getElementById("profile-experiences");
   expList.innerHTML = p.experiences?.length
     ? p.experiences.map(e => `<li><strong>${e.title}</strong> — ${e.company} (${new Date(e.startDate).getFullYear()} → ${e.endDate ? new Date(e.endDate).getFullYear() : "Présent"})</li>`).join("")
     : "<li>Aucune expérience renseignée</li>";
   document.getElementById("profile-modal").classList.add("active");
 };
+document.querySelectorAll(".close-modal").forEach(btn => {
+  btn.addEventListener("click", () => btn.closest(".modal").classList.remove("active"));
+});
+document.querySelectorAll(".modal").forEach(modal => {
+  modal.addEventListener("click", e => {
+    if (e.target === modal) modal.classList.remove("active");
+  });
+});
+document.getElementById("search").addEventListener("input", renderUnassigned);
+renderAll();

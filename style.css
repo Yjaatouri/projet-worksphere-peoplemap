@@ -107,7 +107,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   padding: 2rem;
-  overflow: hidden;
+  overflow:hidden;
   max-height: 600px;
 }
 .zones-grid {
@@ -259,13 +259,13 @@ input, select {
   border-radius: 12px;
   font-size: 1rem;
 }
-/* #photo-preview {
+#photo-preview {
   width: 100%;
   margin-top: 0.5rem;
   border-radius: 12px;
   height: 140px;
   object-fit: cover;
-} */
+}
 .exp-item {
   background: rgb(168, 245, 168);
   padding: 1rem;
@@ -326,6 +326,10 @@ input:invalid, select:invalid {
      position: static; 
 
     }
+    .floor-plan{
+    overflow: scroll;
+  }
+
 }
 @media (max-width: 767px) {
   .form-grid, .exp-item .form-grid { 
@@ -340,10 +344,13 @@ input:invalid, select:invalid {
     grid-template-areas: 
     "reception"
     "security"
-    " server"
+    "server"
     "conference"
     "personel"
     "archives"
     ; 
+  }
+  .floor-plan{
+    overflow: scroll;
   }
 }
