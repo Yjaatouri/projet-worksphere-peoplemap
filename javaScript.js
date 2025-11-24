@@ -19,6 +19,7 @@ for(let i = 0; i<zones.length ; i++){
 // make flags
 let currentEditId = null;
 let currentTargetZone = null;
+
 // function to make sure that we dont have one worker in two zones
 function removeFromAllZones(id){
   let keys = [];
@@ -236,3 +237,22 @@ form.addEventListener("submit", function(e) {
   form.reset();
   currentEditId = null;
 });
+// add experience 
+const addExperienceField = (title = "", company = "", start = "", end = "") => {
+  const div = document.createElement("div");
+  div.className = "exp-item";
+  div.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+      <h4 style="margin:0; color:var(--primary);">Expérience</h4>
+      <button type="button" style="background:var(--red); color:white; border:none; padding:0.25rem 0.5rem; border-radius:8px; cursor:pointer; font-size:1.2rem;">×</button>
+    </div>
+    <div class="form-grid">
+      <div><label>Poste *</label><input type="text" value="${title}"></div>
+      <div><label>Entreprise *</label><input type="text" value="${company}"></div>
+      <div><label>Date début *</label><input type="date" value="${start}"></div>
+      <div><label>Date fin <small>(laisser vide si actuel)</small></label><input type="date" value="${end}"></div>
+    </div>
+  `;
+  div.querySelector("button").onclick = () => div.remove();
+  document.getElementById("experiences-container").appendChild(div);
+};
