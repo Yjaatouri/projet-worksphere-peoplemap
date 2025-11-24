@@ -185,4 +185,54 @@ const validateForm = () => {
 
   return valid;
 };
-// 
+// add event to submit 
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  let experiences = [];
+  let expItems = document.querySelectorAll("#experiences-container .exp-item");
+
+  for (let i = 0; i < expItems.length; i++) {
+    let inputs = expItems[i].querySelectorAll("input");
+    let title   = inputs[0].value.trim();
+    let company = inputs[1].value.trim();
+    let start   = inputs[2].value;
+    let end     = inputs[3].value || null;
+
+    if (title && company && start) {
+      experiences.push({
+        title: title,
+        company: company,
+        startDate: start,
+        endDate: end
+      });
+    }
+  }
+
+  let worker = {
+    id: currentEditId || Date.now().toString(),
+    name: form.name.value.trim(),
+    role: form.role.value,
+    email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
+    photo: form.photo.value.trim() || null,
+    experiences: experiences
+  };
+
+  if (currentEditId) {
+    for (let i = 0; i < staff.length; i++) {
+      if (staff[i].id === currentEditId) {
+        staff[i] = worker;
+        break;
+      }
+    }
+  } else {
+    staff.push(worker);
+  }
+
+  renderAll();
+  closeModal("worker-modal");
+  form.reset();
+  currentEditId = null;
+});
