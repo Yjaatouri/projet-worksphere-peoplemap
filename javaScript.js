@@ -1,3 +1,4 @@
+// creat zones
 const zones = [
   { id: "reception", name: "Réception", required: true, max: 6, allowed: ["Réceptionniste","Nettoyage"] },
   { id: "serveurs", name: "Salle des serveurs", required: true, max: 4, allowed: ["Technicien IT","Nettoyage"] },
@@ -6,13 +7,15 @@ const zones = [
   { id: "personnel", name: "Salle du personnel", required: false, max: 7, allowed: ["Nettoyage","Réceptionniste","Technicien IT","Manager","Agent de sécurité"] },
   { id: "archives", name: "Salle d'archives", required: true, max: 5, allowed: ["Manager"] }
 ];
+// get the worker by DOM
 const form = document.getElementById("worker-form");
-let staff = [
-];
+let staff = [];
 let assignments = {};
-zones.forEach(z => assignments[z.id] = []);
 let currentEditId = null;
 let currentTargetZone = null;
+
+zones.forEach(z => assignments[z.id] = []);
+// function to check if worker in the multip zones 
 function removeFromAllZones(id) {
   let keys = Object.keys(assignments); 
 
@@ -28,7 +31,7 @@ function removeFromAllZones(id) {
     assignments[zoneName] = newList;
   }
 }
-
+// function for allowed zones
 function isAllowed(role, zoneId) {
 
  
@@ -55,7 +58,7 @@ function isAllowed(role, zoneId) {
   
   return false;
 }
-
+// fucntion to control worker added to zones 
 function canAddToZone(zoneId) {
   
   let zone = null;
@@ -85,6 +88,7 @@ function canAddToZone(zoneId) {
     return false; 
   }
 }
+// function to get woekrs in corrent location
 function getCurrentLocation(id) {
   for (let i = 0; i < zones.length; i++) {
     let zoneId = zones[i].id;
@@ -98,6 +102,7 @@ function getCurrentLocation(id) {
   }
   return "Non assigné";
 }
+// error msgs
 const showError = (input, msg) => {
   const errorEl = input.parentElement.querySelector(".error-msg");
   if (errorEl  ){
@@ -113,6 +118,7 @@ const clearAllErrors = () => {
   form.querySelectorAll("input, select").forEach(clearError);
   document.querySelectorAll(".exp-date-error").forEach(el => el.remove());
 };
+// form validation 
 function validateForm() {
   clearAllErrors();
   let valid = true;
@@ -188,7 +194,7 @@ function validateForm() {
 
   return valid;
 }
-
+// submit to add a worker
 form.addEventListener("submit", function(e) {
   e.preventDefault();
   if (!validateForm()) return;
@@ -222,7 +228,7 @@ form.addEventListener("submit", function(e) {
     photo: form.photo.value.trim() || null,
     experiences: experiences
   };
-
+  // worker in edit 
   if (currentEditId) {
     for (let i = 0; i < staff.length; i++) {
       if (staff[i].id === currentEditId) {
@@ -239,13 +245,14 @@ form.addEventListener("submit", function(e) {
   form.reset();
   currentEditId = null;
 });
+// add experiece field
 const addExperienceField = (title = "", company = "", start = "", end = "") => {
   const div = document.createElement("div");
   div.className = "exp-item";
   div.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
       <h4 style="margin:0; color:var(--primary);">Expérience</h4>
-      <button type="button" style="background:var(--red); color:white; border:none; padding:0.25rem 0.5rem; border-radius:8px; cursor:pointer; font-size:1.2rem;">×</button>
+      <button type="button" style="background:red; color:white; border:none; padding:0.25rem 0.5rem; border-radius:8px; cursor:pointer; font-size:1.2rem;">×</button>
     </div>
     <div class="form-grid">
       <div><label>Poste *</label><input type="text" value="${title}"></div>
@@ -258,6 +265,7 @@ const addExperienceField = (title = "", company = "", start = "", end = "") => {
   document.getElementById("experiences-container").appendChild(div);
 };
 document.getElementById("add-exp").onclick = () => addExperienceField();
+// close modal 
 const closeModal = id => {
   document.getElementById(id).classList.remove("active");
   clearAllErrors();
@@ -274,6 +282,7 @@ document.getElementById("add-worker-btn").addEventListener("click", () => {
   document.getElementById("modal-title").textContent = "Ajouter un employé";
   document.getElementById("worker-modal").classList.add("active");
 });
+// edit modal 
 window.openEditModal = id => {
   currentEditId = id;
   const p = staff.find(s => s.id === id);
@@ -288,7 +297,6 @@ window.openEditModal = id => {
   const container = document.getElementById("experiences-container");
   container.innerHTML = "";
   (p.experiences || []).forEach(exp => addExperienceField(exp.title, exp.company, exp.startDate, exp.endDate || ""));
-  if (!p.experiences?.length) addExperienceField();
 
   document.getElementById("worker-modal").classList.add("active");
 };
@@ -296,7 +304,7 @@ form.photo.addEventListener("input", () => {
   const url = form.photo.value.trim();
   document.getElementById("photo-preview").src = url ;
 });
-
+// render unnassigned workers
 const renderUnassigned = () => {
   const container = document.getElementById("unassigned-list");
   const search = (document.getElementById("search").value || "").toLowerCase();
@@ -308,12 +316,13 @@ const renderUnassigned = () => {
       <img src="${p.photo || `https://via.placeholder.com/50?text=${p.name[0]}`}" alt="${p.name}">
       <div class="info"><h4>${p.name}</h4><small>${p.role}</small></div>
       <div class="actions">
-        <button onclick="openEditModal('${p.id}')">Edit</button>
+        <button style = "border : black;" onclick="openEditModal('${p.id}')">Edit</button>
         <button onclick="deleteStaff('${p.id}')">Delete</button>
       </div>
     </div>
   `).join("");
 };
+// render zones
 const renderZones = () => {
   zones.forEach(zone => {
     const zoneEl = document.querySelector(`[data-zone="${zone.id}"]`);
@@ -322,6 +331,7 @@ const renderZones = () => {
     const list = zoneEl.querySelector(".occupied-list");
     const isEmptyRequired = zone.required && occupied.length === 0;
     counter.textContent = `${occupied.length}/${zone.max}`;
+    // change zones colors
     if (isEmptyRequired) counter.textContent += " (Obligatoire)";
     if (isEmptyRequired) {
       zoneEl.classList.add("required", "empty");
@@ -345,6 +355,7 @@ window.unassign = id => {
   removeFromAllZones(id);
   renderAll();
 };
+// delet staff 
 window.deleteStaff = id => {
   if (confirm("Supprimer cet employé définitivement ?")) {
     staff = staff.filter(s => s.id !== id);
@@ -352,6 +363,7 @@ window.deleteStaff = id => {
     renderAll();
   }
 };
+// add to zone
 window.openAddToZone = zoneId => {
   currentTargetZone = zoneId;
   const zone = zones.find(z => z.id === zoneId);
@@ -377,6 +389,7 @@ window.openAddToZone = zoneId => {
   }
   document.getElementById("add-to-zone-modal").classList.add("active");
 };
+// assign to corrent zones
 window.assignToCurrentZone = id => {
   if (!currentTargetZone) return;
   removeFromAllZones(id);
@@ -409,4 +422,5 @@ document.querySelectorAll(".modal").forEach(modal => {
   });
 });
 document.getElementById("search").addEventListener("input", renderUnassigned);
+
 renderAll();
